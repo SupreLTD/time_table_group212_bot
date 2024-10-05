@@ -15,4 +15,4 @@ RUN poetry install
 
 ENV PYTHONPATH=/code
 
-CMD ["python3", "bot.py"]docker ps
+CMD ["python3", "bot.py"]
