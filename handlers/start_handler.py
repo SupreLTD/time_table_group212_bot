@@ -26,10 +26,7 @@ async def check(message: Message):
 @router.message(Command('about'))
 async def check(message: Message):
     await message.answer(
-        """Разработано Python разработчиком Иваном Довбня @SupreLTD\n
-        Исходник 
-        https://github.com/SupreLTD/time_table_group212_bot
-        """
+        "Разработано Python разработчиком Иваном Довбня @SupreLTD\nИсходник\тhttps://github.com/SupreLTD/time_table_group212_bot"
     )
 
 

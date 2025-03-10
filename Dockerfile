@@ -1,18 +1,22 @@
 FROM python:3.12-slim
 
-ENV PYTHONUNBUFFERED=1
-ENV POETRY_VERSION=1.8.3
-ENV PIP_DEFAULT_TIMEOUT=1000
+ENV PYTHONUNBUFFERED=1 \
+    POETRY_VERSION=1.8.3 \
+    PIP_DEFAULT_TIMEOUT=1000 \
+    PYTHONPATH=/code
 
 WORKDIR /code
 
-RUN apt clean && apt update
+# Устанавливаем зависимости системы
+RUN apt update && apt install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Копируем код в контейнер
 COPY . /code/
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
-
-ENV PYTHONPATH=/code
+# Устанавливаем Poetry нужной версии
+RUN pip install --no-cache-dir poetry==$POETRY_VERSION && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-root
 
 CMD ["python3", "bot.py"]

@@ -126,6 +126,16 @@ def get_week_number(date):
     return ((date - start_date).days // 7) + 1
 
 
+def get_type_lesson(lesson: str):
+    match lesson:
+        case 'лекция':
+            return '📖 Лекция 🎓'
+        case 'практическая':
+            return '🛠 Практическая 📝'
+        case 'семинар':
+            return '💬 Семинар 🗣️'
+
+
 def filter_lectures(lectures, week_number):
     result = []
     for lecture in lectures:
@@ -135,11 +145,11 @@ def filter_lectures(lectures, week_number):
             if '-' in wr:
                 start, end = map(int, wr.split('-'))
                 if start <= week_number <= end:
-                    result.append(f'{lecture[1]}({tp})')
+                    result.append(f'{get_type_lesson(tp)}\n{lecture[1]}')
 
             else:
                 if int(wr) == week_number:
-                    result.append(f'{lecture[1]}\n{tp}')
+                    result.append(f'{get_type_lesson(tp)}\n{lecture[1]}')
     return result
 
 
@@ -186,5 +196,6 @@ def get_schedule_message_for_week(next_week=False):
                     msg += f"<b>{time}:</b>\n"
                     for lecture in filtered_lectures:
                         msg += f"{lecture}\n"
+                    msg += "\n"
 
     return msg
