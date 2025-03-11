@@ -18,18 +18,16 @@ async def update_message_or_send_new(message: Message, state: FSMContext, text: 
     current_text = user_data.get("current_text")
 
     if message_id:
-        try:
-            if current_text != text:
-                await message.bot.edit_message_text(
-                    text,
-                    chat_id=message.chat.id,
-                    message_id=message_id
-                )
-                await state.update_data(current_text=text)
-        except Exception as e:
+        if current_text != text:
+            await message.bot.edit_message_text(
+                text,
+                chat_id=message.chat.id,
+                message_id=message_id
+            )
+            await state.update_data(current_text=text)
+        else:
             sent_message = await message.answer(text)
             await state.update_data(message_id=sent_message.message_id, current_text=text)
-
     else:
         sent_message = await message.answer(text)
         await state.update_data(message_id=sent_message.message_id, current_text=text)
